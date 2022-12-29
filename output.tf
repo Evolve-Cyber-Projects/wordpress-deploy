@@ -1,3 +1,3 @@
 output "ingress_endpoint" {
-    value = module.wordpress-helm-chart-deploy.values.host
+    value = module.wordpress-helm-chart-deploy.ingress.rules.host
 }
