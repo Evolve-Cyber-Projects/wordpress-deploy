@@ -1,6 +1,6 @@
 data "kubernetes_service" "ingress_svc" {
   metadata {
-    name = "ingress_svc"
+    name = "wordpress"
   }
 }
 
