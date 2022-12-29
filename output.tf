@@ -1,9 +1,8 @@
-data "kubernetes_ingress" "example" {
+data "kubernetes_service" "ingress_svc" {
   metadata {
-    name = "wordpress"
+    name = "ingress_svc"
   }
 }
 
 output "instance_ip_addr" {
-  value = data.kubernetes_ingress.example.spec.rule.0.host               #status.0.load_balancer.0.ingress[0].ip
-}
+  value = data.kubernetes_service.ingress_svc.status.0.load_balancer.0.ingress[0].ip
