@@ -1,5 +1,5 @@
 module "mysql-helm-chart-deploy" {
-    source = "../modules/terraform-helm-local"
+    source = "./modules/terraform-helm-local"
     deployment_name = "mysql"
     deployment_namespace = "wordpress"
     deployment_path = "../k8s/helm-charts/mysql-chart"
@@ -7,7 +7,7 @@ module "mysql-helm-chart-deploy" {
 }
 
 module "wordpress-helm-chart-deploy" {
-    source = "../modules/terraform-helm-local"
+    source = "./modules/terraform-helm-local"
     deployment_name = "wordpress"
     deployment_namespace = "wordpress"
     deployment_path = "../k8s/helm-charts/wordpress-chart"
