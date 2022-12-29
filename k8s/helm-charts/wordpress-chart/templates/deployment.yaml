@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        vault.opstree.secret.manager/enabled: "true"
+        vault.opstree.secret.manager/path: {{ .Values.vaultSecretPath}}
+        vault.opstree.secret.manager/role: {{ .Values.roleName }}
+        vault.opstree.secret.manager/service: {{ .Values.vaultUrl }}
+      labels:
+        app: wordpress
+        tier: web
+    spec:
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      containers:
+      - image: {{ .Values.image }}:{{ .Values.tag }}
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: mysql-wp:3306
+        - name: WORDPRESS_DB_PASSWORD
+          value: vault:mysql_user_password
+        - name: WORDPRESS_DB_USER
+          value: vault:mysql_user
+        - name: WORDPRESS_DB_NAME
+          value: vault:mysql_database
+        ports:
+        - containerPort: {{ .Values.port }}
+          name: wordpress
+        volumeMounts:
+        - name: persistent-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: persistent-storage
+        persistentVolumeClaim:
+          claimName: wordpress-pv-claim

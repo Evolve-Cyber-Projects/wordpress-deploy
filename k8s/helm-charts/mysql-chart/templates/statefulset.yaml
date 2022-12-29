@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-wp
+spec:
+  serviceName: {{ .Release.Name }}-wp
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: mysql
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: mysql
+      annotations: 
+        vault.opstree.secret.manager/enabled: "true"
+        vault.opstree.secret.manager/path: {{ .Values.vaultSecretPath}}
+        vault.opstree.secret.manager/role: {{ .Values.roleName }}
+        vault.opstree.secret.manager/service: {{ .Values.vaultUrl }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      containers:
+      - image: {{ .Values.image }}:{{ .Values.tag }}
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: vault:mysql_password
+        - name: MYSQL_USER
+          value: vault:mysql_user
+        - name: MYSQL_PASSWORD
+          value: vault:mysql_user_password
+        - name: MYSQL_DATABASE
+          value: vault:mysql_database
+        ports:
+        - containerPort: {{ .Values.port }}
+          name: mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-pv-claim 
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
