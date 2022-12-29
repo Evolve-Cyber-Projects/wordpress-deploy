@@ -3,7 +3,4 @@ resource "helm_release" "helm_deployment" {
   namespace = var.deployment_namespace
   chart     = var.deployment_path
   wait      = false
-  values = [
-    "${file("values.yaml")}"
-  ]
 }
