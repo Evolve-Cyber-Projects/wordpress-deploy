@@ -6,5 +6,5 @@ data "kubernetes_ingress_v1" "wordpress" {
 }
 
 output "ingress_endpoint" {
-    value = data.kubernetes_ingress_v1.wordpress.status.[0].load_balancer.[0].ingress.[0].hostname
+    value = data.kubernetes_ingress_v1.wordpress.status.0.load_balancer.0.ingress.0.hostname
 }
