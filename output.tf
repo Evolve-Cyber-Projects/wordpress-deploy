@@ -14,5 +14,5 @@ data "kubernetes_resource" "example" {
 }
 
 output "ingress_endpoint" {
-    value = data.kubernetes_resource.example.status.0.hostname
+    value = data.kubernetes_resource.example.object.0.hostname
 }
