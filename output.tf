@@ -1,6 +1,3 @@
-# data "kubernetes_ingress_v1" "wordpress" {
-#   metadata {
-#     name      = "wordpress"
-#     namespace = helm_release.wordpress.namespace
-#   }
-# }
+output "ingress_endpoint" {
+    value = module.wordpress-helm-chart-deploy.ingress_endpoint
+}
