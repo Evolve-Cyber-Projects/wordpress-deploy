@@ -9,5 +9,5 @@ data "kubernetes_ingress_v1" "ingress" {
 
 
 output "urls" {
-  value = $(data.kubernetes_ingress_v1.ingress.spec[0].rule[0].host).awsflow.com
+  value = data.kubernetes_ingress_v1.ingress[0].spec[0].rule[0].host : data.kubernetes_ingress.ingress[0].spec[*].rule[*].host
 }
