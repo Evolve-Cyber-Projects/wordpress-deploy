@@ -1,28 +1,13 @@
-data "kubernetes_service" "example" {
+data "kubernetes_ingress_v1" "ingress" {
   metadata {
     name = "wordpress"
-    namespace = "wordpress"
+    namespace = var.deployment_namespace
   }
 }
-output "load_balancer_hostname" {
-  value = data.kubernetes_service.example.status.0.load_balancer.0.ingress.0.hostname
+
+
+
+
+output "urls" {
+  value = kubernetes_ingress_v1.ingress[0].spec[*].rule[*].host : kubernetes_ingress.ingress[0].spec[*].rule[*].host
 }
-
-# # output "ingress_endpoint" {
-# #     value = module.wordpress-helm-chart-deploy.status.0.load_balancer.0.ingress.0.hostname #ingress_endpoint
-# # } 
-# # # value = data.kubernetes_ingress_v1.wordpress.status.0.load_balancer.0.ingress.0.hostname
-
-# data "kubernetes_resource" "example" {
-#   api_version = "v1"
-#   kind        = "Ingress"
-
-#   metadata {
-#     name      = "wordpress"
-#     namespace = "wordpress"
-#   }
-# }
-
-# output "ingress_endpoint" {
-#     value = data.kubernetes_resource.example.object.0.hostname
-# }
