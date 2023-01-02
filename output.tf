@@ -9,5 +9,5 @@ data "kubernetes_ingress_v1" "ingress" {
 
 
 output "urls" {
-  value = data.kubernetes_ingress_v1.ingress[0].spec[*].rule[*].host 
+  value = data.kubernetes_ingress_v1.ingress.spec[*].rule[*].host 
 }
